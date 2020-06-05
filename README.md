@@ -11,6 +11,8 @@ You can install the development version of fire from [GitHub](https://github.com
 devtools::install_github("sgarrick713/fire")
 ```
 
+Requires loading of package `tmap`
+
 ## Datasets
 
 - `Firestat` - Firestation point locations for all firestations in California.
