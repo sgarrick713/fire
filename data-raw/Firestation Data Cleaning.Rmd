@@ -1,0 +1,55 @@
+---
+title: "Firestation Prep"
+output: pdf_document
+---
+
+# Cleaning
+
+### Load Packages
+```{r message=FALSE, warning=FALSE}
+library(sf)
+library(dplyr)
+```
+
+
+### Load data
+```{r message=FALSE, warning=FALSE}
+load("firestations.RData")
+```
+
+### Rename & Delete Columns
+```{r}
+fireloc <- firestations[,c(1:3,5:7)]
+names(fireloc) <- c("FDID", "name", "address", "city", "state", "zip")
+```
+
+### Standardize Zips
+```{r}
+df <-mutate(fireloc,zip=as.character(zip))
+firelocations<-mutate(df,zip=sapply(strsplit(df$zip, split='-', fixed=TRUE),function(x) (x[1])))
+```
+
+### Add location column
+```{r}
+firelocations<- firelocations %>%
+  mutate(location = paste0(address, " ", city, ", ", state, " ", zip))
+```
+
+# Add Geometry
+
+### Read in shapefile of Zipcodes from [OpenDataSoft]("https://public.opendatasoft.com/explore/dataset/us-zip-code-latitude-and-longitude/export/?refine.state=CA")
+```{r message=FALSE, warning=FALSE}
+load("USZipGeo.RData")
+zipcodes <- USZipGeo[,c(1,4,5,8)]
+```
+
+### Add geometry to Firestation Dataset
+```{r}
+FS <- merge(firelocations, zipcodes, by='zip')
+Firestat <- st_as_sf(FS)
+```
+
+# Create Cleaned Files
+```{r message=FALSE, warning=FALSE}
+save(Firestat, file = "Firestat.rda")
+```

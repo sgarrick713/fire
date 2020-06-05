@@ -1,0 +1,51 @@
+---
+title: "Weather Data Cleaning"
+output: pdf_document
+---
+
+# Clean
+
+### load packages
+```{r}
+library(sf)
+library(dplyr)
+```
+
+### load data
+```{r}
+load("weather.RData")
+```
+
+### select columns
+```{r}
+w <- weather%>%
+  select("STATION","NAME","LATITUDE","LONGITUDE","ANN.PRCP.NORMAL","ANN.TAVG.NORMAL")
+```
+
+### remove NA's
+```{r}
+wdf <- na.omit(w)
+```
+
+### rename columns
+```{r}
+names(wdf) <- c("STATION", "NAME", "LATITUDE","LONGITUDE", "Avg_Precip", "Avg_Temp")
+```
+
+
+# Add Geometry
+
+### Convert to spatial object
+```{r}
+WeatherGeo <- st_as_sf(wdf, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+```
+
+### Check
+```{r}
+plot(WeatherGeo)
+```
+
+### save cleaned file
+```{r}
+save(WeatherGeo, file = "WeatherGeo.rda")
+```
