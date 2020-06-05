@@ -1,0 +1,17 @@
+Package: fire
+Title: Maps Fire Related Data
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Sofia",
+           family = "Garrick",
+           role = c("aut", "cre"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package provides clean data relevant to tracking and mapping fires. The current version of this package is in development and only includes the firestation locations, temperature, and precipitation data for the state of California. Future iterations of the package should include more detailed weather data, buffer mapping capabilities, live fire tracking, and information for states other than California. 
+License: NA
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
+Imports: 
+    tmap,
+    sf
